@@ -10,6 +10,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./base.css": "./dist/base.css",
     "./scss/base": "./scss/base.scss",
@@ -33,9 +37,13 @@
     "test": "vitest run --coverage"
   },
   "peerDependencies": {
-    "react": "^19.0.0"
+    "@reduxjs/toolkit": "^2.0.0",
+    "@testing-library/react": "^16.0.0",
+    "react": "^19.0.0",
+    "react-redux": "^9.0.0"
   },
   "devDependencies": {
+    "@reduxjs/toolkit": "2.14.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
@@ -46,8 +54,14 @@
     "jsdom": "30.1.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "react-redux": "9.3.1",
     "sass": "1.105.0",
     "typescript": "7.0.2",
     "vitest": "5.0.5"
+  },
+  "peerDependenciesMeta": {
+    "@testing-library/react": {
+      "optional": true
+    }
   }
 }
