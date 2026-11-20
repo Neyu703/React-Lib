@@ -1,0 +1,68 @@
+$gap: 4px;
+
+.segmented {
+  --segment-count: 3;
+  --segment-index: 0;
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: $gap;
+  padding: $gap;
+  border: var(--segmented-border, 0 solid transparent);
+  border-radius: 12px;
+  background: var(--segmented-track, #edf0f5);
+
+  @each $count in 1, 2, 4, 5, 6, 7, 8 {
+    &[data-count="#{$count}"] { --segment-count: #{$count}; }
+  }
+
+  @for $index from 1 through 7 {
+    &[data-at="#{$index}"] { --segment-index: #{$index}; }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+    inset: $gap auto $gap $gap;
+    width: calc((100% - #{$gap} * (var(--segment-count) + 1)) / var(--segment-count));
+    border: var(--segmented-thumb-border, 0 solid transparent);
+    border-radius: 8px;
+    background: var(--segmented-thumb, #fff);
+    box-shadow: var(--segmented-shadow, none);
+    transform: translateX(calc(var(--segment-index) * (100% + #{$gap})));
+    transition: transform .2s ease;
+    pointer-events: none;
+  }
+
+  &[data-at="-1"]::before { visibility: hidden; }
+
+  button {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    padding: var(--segmented-padding, 8px 18px);
+    color: var(--segmented-muted, #39445a);
+    font-size: var(--segmented-font-size, inherit);
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: color .2s ease;
+
+    &[aria-pressed="true"] { color: var(--segmented-selected, #15233a); }
+    &:focus-visible { outline: 2px solid var(--segmented-focus, #1958bf); outline-offset: 1px; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented::before, .segmented button { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .segmented button[aria-pressed="true"] { outline: 1px solid Highlight; outline-offset: -2px; }
+}
