@@ -2,6 +2,8 @@
 
 Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (React 19, Sass). Die Apps verwenden ihre eigene React-Installation. Alle Stile sind SCSS; `dist` enthält zusätzlich das gebaute CSS.
 
+Entscheidungen, Aufbau, Checkliste zum Anbinden einer App und Stand aller Repos: [docs/architecture.md](docs/architecture.md).
+
 ## Installieren
 
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
