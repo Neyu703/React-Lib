@@ -3,6 +3,10 @@
   gap: 4px;
   overflow-x: auto;
   border-bottom: 1px solid var(--separator);
+
+  &[aria-orientation="vertical"] {
+    flex-direction: column;
+  }
 }
 
 .tab {

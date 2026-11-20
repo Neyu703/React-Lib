@@ -1,6 +1,6 @@
 # Architektur: modulare Apps mit React-Lib
 
-Stand: 2026-11-20, Branch `react-lib-refactor` (Lib `v0.5.0-rc.4`). Dieses Dokument hält die Entscheidungen fest, damit sie nicht jedes Mal neu besprochen werden.
+Stand 20. November 2026 auf `react-lib-refactor`. Die Desktop-Frontends beziehen `v0.5.0`.
 
 ## Ziel
 
@@ -30,9 +30,11 @@ Modulgrenzen: Module importieren sich nicht gegenseitig außer über `index.ts` 
 
 ## Eine App anbinden (Checkliste)
 
+Für den Einbau zuerst die [Anwendungsübersicht mit Beispielen](../README.md#einstieg-für-menschen-und-agenten) öffnen. Dieser Abschnitt beschreibt die gemeinsame Architektur.
+
 1. `pnpm add github:Neyu703/React-Lib#<Tag>` (Tags: `v0.4.0` stabil, `v0.5.0-rc.N` Vorabversion). Optional `pnpm add @reduxjs/toolkit react-redux` (Peers).
 2. Store: `{ [REACT_LIB_STATE_KEY]: reactLibReducer }` zu den eigenen Reducern. Ein Store für die ganze App, auch für das Anmelde-Gate.
-3. SCSS: `@use "@neyu703/react-lib/scss/base";` (Tokens, Reset) und `@use "@neyu703/react-lib/scss/styles";` vor den App-Stilen. Eine App mit eigener Palette definiert die Lib-Tokens als **Aliase** auf ihre Variablen: `--tint`, `--on-tint`, `--label`, `--label-secondary`, `--separator`, `--bg-card`, `--fill`, `--fill-hover`, `--red`, `--shadow-card` (Beispiel: `Dienstplan/frontend/src/styles/_tokens.scss`).
+3. SCSS: `@use "@neyu703/react-lib/scss/base";` (Tokens, Reset) und `@use "@neyu703/react-lib/scss/styles";` vor den App-Stilen. Bei eigener Palette die benötigten Lib-Tokens auf die App-Variablen abbilden, etwa `--tint`, `--label-secondary`, `--bg-card` und für Statusanzeigen `--green`, `--orange`, `--red`. EXEBuilder bindet die Komponentenstile per SCSS ein und mappt die Farben in `frontend/src/styles/_tokens.scss`. Dienstplan lädt die gebauten Komponentenstile in `main.tsx` vor dem eigenen SCSS. StoreRename begrenzt die Komponentenstile vorerst auf seine React-Bereiche.
 4. `configureReactLib({ ... })` **einmal mit allen Handlern** aufrufen: der Aufruf ersetzt alle Handler. Muss das Anmelde-Gate vorher laufen, wird `authApi` im frühen und im späteren Aufruf mitgegeben (Beispiel: `Dienstplan/frontend/src/lib/reactLibHost.ts`).
 5. Anmeldung: `<Provider store><LoginGate title="…"><App/></LoginGate></Provider>`. Alles, was die API anspricht, lädt erst hinter dem Gate (Beispiel: `Dienstplan/frontend/src/main.tsx`).
 6. Tests: `createTestStore`/`renderWithLibStore`, `fakeAuthApi()`, `installDomStubs()` und `resetReactLib()` aus `@neyu703/react-lib/testing`.
@@ -53,27 +55,24 @@ REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon 
 ## Release und Branches
 
 - Der gesamte Umbau läuft auf dem Branch **`react-lib-refactor`** in allen betroffenen Repos. Auf `main` liegt der Stand vor dem Umbau (die Lib-Tags bis `v0.4.0` und die gepushten Lib-Commits auf `main` sind bewusst nicht zurückgenommen, die alten Apps pinnen `v0.1.0`).
-- Lib-Release: Version in `package.json`, `pnpm build`, `pnpm test` (100 %), Commit inkl. `dist`, Tag `vX.Y.Z`, Push von Branch und Tag. Apps pinnen den Tag (`github:Neyu703/React-Lib#v0.5.0-rc.4`), nie einen lokalen `file:`-Link.
-- Vor dem Merge nach `main`: alle Apps im Browser prüfen (bisher nur über Tests abgesichert), Lib als `v0.5.0` taggen und die Pins von `-rc.N` auf `0.5.0` stellen.
+- Lib-Release: Version in `package.json`, `pnpm build`, `pnpm test` (100 %), Commit inkl. `dist`, Tag `vX.Y.Z`, Push von Branch und Tag. Apps pinnen den Tag (`github:Neyu703/React-Lib#v0.5.0`), nie einen lokalen `file:`-Link.
+- Vor dem Merge in den jeweiligen Hauptbranch die App im Browser oder WebView2 prüfen und den Pin auf das gemeinsame Release umstellen. StoreRename verwendet `develop` als Hauptbranch.
 
 ## Stand der Repos (react-lib-refactor)
 
 | Repo | Inhalt |
 |---|---|
-| React-Lib | Module + einfache Komponenten, 436 Tests, 100 % |
+| React-Lib | `v0.5.0` enthält neue Buttons, Auswahl, Status und Tabs. `Select` um native Attribute und gesperrte Optionen, `Tabs` um vertikale Navigation, Sperrhinweise und eine von der App gesteuerte Auswahl. `JobSteps` lässt sich in einer eigenen Fortschrittsansicht rendern. |
 | Dienstplan | Komponenten, Dialoge, Anmeldung aus der Lib; Backend nutzt `job_progress`/`install_update` aus Packages |
-| Schichtplan | Redux-Store, `LoginGate` aus der Lib, SCSS |
-| ConfigEditor | FastAPI-Backend, Redux-Store, SCSS, `SearchField`, 100 % |
-| EXEBuilder | Lib-`Skeleton`, Token-Aliase, Frontend-Tests 100 % |
-| StoreRename | FastAPI-Backend (`webserver/`), Host-/Origin-Prüfung gegen DNS-Rebinding; React-Frontend in Arbeit (Plan: `docs/react-migration-plan.md`) |
+| Schichtplan | Gemeinsamer Redux-Store, `LoginGate`, `StatusPill` für den Setup-Status und SCSS-Basis. |
+| ConfigEditor | FastAPI, Redux, SCSS. Nutzt Suche, Ladeplatzhalter, `Select` für die Projektwahl und `Button` für Dateiaktionen. |
+| EXEBuilder | Verwendet `Tabs`, `StatusPill` und `Skeleton`. Die Tab-Auswahl wird weiterhin in den App-Einstellungen gespeichert. |
+| StoreRename | FastAPI-Backend (`webserver/`). Der Web-Build übernimmt Suche, Suchfilter, Neu-Laden, Verbindungsstatus und Update-Dialog in React. Der übrige Ablauf liegt in der bestehenden HTML-Oberfläche (`docs/react-migration-plan.md`). |
 | Misc/Packages | `job_progress`, `install_update` fertig; `entra_auth/frontend` entfernt |
 | StrongCSVVisualizer, coords-checklist, WebDeployment | `main` auf Vorumbau-Stand zurückgesetzt (Revert); `base-css` ist archiviert, die Lib enthält Tokens, Reset und Mixins |
 
-## Bekannte Lücken und offene Punkte
+## Nachweis und offene Punkte
 
-- Kein Browser-Lauf: Aussehen der Felder, Dialoge, Anmeldung gegen Entra, Jobfortschritt, Farbpalette sind nur über Tests abgesichert. Die Lib-Stile laden jetzt vor den App-Stilen und können die Kaskade verändern.
-- Lib fehlt noch: eine Navigations-Komponente (`SideNav` bleibt im Dienstplan). Die Basis setzt eine globale Body-Schrift, die Apps überschreiben müssen. Neu in `rc.4` (`IconButton` mit Text, `SearchField`-Platzhalter, `Button`, `StatusPill`, `Select`, Modul `tabs`) sind nur über Tests abgesichert.
-- `Card` (Collapsible) und `SideNav` bleiben im Dienstplan, weil ihre Stile am Plan-Layout hängen.
-- StoreRename-Frontend (React/Redux) wird gebaut (Plan im Repo). EXEBuilder ist FastAPI, nutzt aber eigene SSE-Streams (`/api/events`, `/api/stream`) statt `install_jobs`/`install_update`; eine Angleichung ist offen.
-- `Dienstplan`: `RhythmWizard`-Test „without showProblems …" ist unter Last unzuverlässig (läuft allein oder als Datei grün), unabhängig vom Umbau.
-- Commits der Agenten sind teils von Hand statt mit `smart-commit` entstanden (Agenten können den Skill nicht aufrufen).
+- Geprüft wurden die fünf Frontend-Builds, 439 Lib-Tests mit 100 % Coverage und 786 StoreRename-Python-Tests. Ein Chrome-Test mit simuliertem Backend deckte die portierten StoreRename-Bedienelemente ab. Sichtprüfung in WebView2, Anmeldung gegen Entra und ein StoreRename-Lauf mit echter Datenbank stehen für diesen Stand noch aus.
+- Nach dem nächsten Lib-Tag die validierten ConfigEditor-Formularfelder und die Hauptnavigation des Dienstplans anbinden. Dabei Hilfs- und Fehlermeldungen, die Tab-Reihenfolge und die Gründe für gesperrte Tabs prüfen.
+- `Card` und die scrollgebundene `SideNav` gehören weiterhin zum Plan-Layout. EXEBuilder betreibt eigene SSE-Streams für Lebenszeichen und parallele Aktionen. StoreRename behält seine Vorschau, Bestätigungsfrist und Rollback-Logik in der App.

@@ -59,4 +59,16 @@ describe("Select", () => {
     expect(screen.getByRole("combobox")).toBeDisabled();
     expect(document.querySelector("label.float > select.select")).not.toBeNull();
   });
+
+  it("passes validation attributes and keeps an unknown, disabled value visible", () => {
+    render(<>
+      <Select id="sel" label="Wahl" value="bad" onChange={() => undefined}
+        aria-invalid aria-describedby="hint" options={[["bad", "Ungültiger Dateiwert", true], ...OPTIONS]} />
+      <p id="hint">Bitte einen gültigen Wert wählen.</p>
+    </>);
+    expect(screen.getByRole("combobox")).toHaveValue("bad");
+    expect(screen.getByRole("combobox")).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("combobox")).toHaveAccessibleDescription("Bitte einen gültigen Wert wählen.");
+    expect(screen.getByRole("option", { name: "Ungültiger Dateiwert" })).toBeDisabled();
+  });
 });

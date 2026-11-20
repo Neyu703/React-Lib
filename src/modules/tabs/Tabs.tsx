@@ -8,37 +8,48 @@ export const useActiveTab = (group: string, fallback: string): string =>
   useReactLibSelector((state) => state.tabs.active[group] ?? fallback);
 
 /** Index of the tab a navigation key moves to; undefined for any other key. */
-function targetIndex(key: string, index: number, count: number): number | undefined {
-  if (key === "ArrowRight") return (index + 1) % count;
-  if (key === "ArrowLeft") return (index - 1 + count) % count;
+function targetIndex(key: string, index: number, count: number, vertical: boolean): number | undefined {
+  if (key === (vertical ? "ArrowDown" : "ArrowRight")) return (index + 1) % count;
+  if (key === (vertical ? "ArrowUp" : "ArrowLeft")) return (index - 1 + count) % count;
   if (key === "Home") return 0;
   if (key === "End") return count - 1;
   return undefined;
 }
 
 /** A tab bar that keeps its selection in the store (`tabs` slice); read it elsewhere with `useActiveTab`. */
-export function Tabs({ group, tabs, defaultTab, label }: TabsProps) {
+export function Tabs({ group, tabs, defaultTab, label, orientation = "horizontal", className, activeTab, onTabChange }: TabsProps) {
   const dispatch = useReactLibDispatch();
-  const active = useActiveTab(group, defaultTab ?? tabs[0]?.id ?? "");
-  const select = (tab: string): void => {
-    dispatch(tabSelected({ group, tab }));
+  const firstEnabled = tabs.find((tab) => !tab.disabled)?.id ?? "";
+  const storedActive = useActiveTab(group, defaultTab ?? firstEnabled);
+  const requested = activeTab ?? storedActive;
+  const active = tabs.some((tab) => tab.id === requested && !tab.disabled) ? requested : firstEnabled;
+  const select = (id: string): void => {
+    if (activeTab === undefined) dispatch(tabSelected({ group, tab: id }));
+    onTabChange?.(id);
   };
 
-  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number): void => {
-    const target = targetIndex(event.key, index, tabs.length);
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>): void => {
+    const buttons = Array.from(event.currentTarget.parentElement!.querySelectorAll<HTMLButtonElement>(
+      'button[role="tab"]:not([aria-disabled="true"])',
+    ));
+    const index = buttons.indexOf(event.currentTarget);
+    if (index === -1) return;
+    const target = targetIndex(event.key, index, buttons.length, orientation === "vertical");
     if (target === undefined) return;
     event.preventDefault();
-    select((tabs[target] as (typeof tabs)[number]).id);
-    (event.currentTarget.parentElement?.children[target] as HTMLElement).focus();
+    const button = buttons[target]!;
+    select(button.dataset.tab!);
+    button.focus();
   };
 
   return (
     <div
       role="tablist"
       aria-label={label}
-      className="tabs"
+      aria-orientation={orientation}
+      className={className ? `tabs ${className}` : "tabs"}
     >
-      {tabs.map((tab, index) => {
+      {tabs.map((tab) => {
         const selected = tab.id === active;
         return (
           <button
@@ -46,13 +57,17 @@ export function Tabs({ group, tabs, defaultTab, label }: TabsProps) {
             type="button"
             role="tab"
             id={`tab-${group}-${tab.id}`}
+            data-tab={tab.id}
             aria-selected={selected}
+            aria-disabled={tab.disabled || undefined}
             tabIndex={selected ? 0 : -1}
             className="tab"
-            onClick={() => select(tab.id)}
-            onKeyDown={(event) => onKeyDown(event, index)}
+            title={tab.title}
+            onClick={() => { if (!tab.disabled) select(tab.id); }}
+            onKeyDown={onKeyDown}
           >
-            {tab.label}
+            {tab.icon}
+            <span>{tab.label}</span>
             {tab.badge === undefined ? null : <span className="tab-badge">{tab.badge}</span>}
           </button>
         );

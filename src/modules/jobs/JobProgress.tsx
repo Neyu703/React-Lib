@@ -1,19 +1,9 @@
 import { useEffect, useRef } from "react";
 import { DialogFrame, Modal } from "../dialogs/index.js";
 import { reactLibHandlers } from "../../core/host.js";
+import { JobSteps, formatDuration } from "./JobSteps.js";
 import { jobAutoCloseSet, jobViewCleared } from "./slice.js";
-import type { JobStep } from "./types.js";
 import { useReactLibDispatch, useReactLibSelector } from "../../core/hooks.js";
-
-const formatDuration = (ms: number): string =>
-  ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`;
-const STEP_ICONS: Record<JobStep["status"], string> = {
-  pending: "○",
-  running: "◔",
-  done: "✓",
-  failed: "✕",
-  skipped: "–",
-};
 
 /** Shows the live progress of long actions; the app's API layer feeds it through `jobViewSet`. */
 export function JobProgress() {
@@ -102,34 +92,7 @@ export function JobProgress() {
           steht als Balken im Taskleisten-Button und im Symbol neben der Uhr, und nach längeren
           Läufen meldet sich Windows, sobald alles fertig ist.
         </p>
-        <ol
-          id="job-steps"
-          className="job-steps"
-        >
-          {steps.map((step, at) => (
-            <li
-              key={at}
-              className={`job-step ${step.status}`}
-            >
-              <span
-                className="job-icon"
-                aria-hidden="true"
-              >
-                {STEP_ICONS[step.status]}
-              </span>
-              <span className="job-label">
-                {step.label}
-                {step.total
-                  ? ` (${Math.min(step.current ?? 0, step.total)} von ${step.total})`
-                  : ""}
-                {step.detail ? <span className="job-detail">{step.detail}</span> : null}
-              </span>
-              <span className="job-duration">
-                {step.duration_ms === null ? "" : formatDuration(step.duration_ms)}
-              </span>
-            </li>
-          ))}
-        </ol>
+        <JobSteps id="job-steps" steps={steps} />
         <h3>Ablauf</h3>
         <ol
           id="job-log"

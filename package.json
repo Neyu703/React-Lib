@@ -1,6 +1,6 @@
 {
   "name": "@neyu703/react-lib",
-  "version": "0.5.0-rc.4",
+  "version": "0.5.0",
   "description": "Gemeinsame React-Komponenten, Tokens und Sass-Mixins für KTE-Programme",
   "private": true,
   "type": "module",

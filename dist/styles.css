@@ -1535,6 +1535,9 @@ label.float > .select {
   overflow-x: auto;
   border-bottom: 1px solid var(--separator);
 }
+.tabs[aria-orientation=vertical] {
+  flex-direction: column;
+}
 
 .tab {
   display: inline-flex;
