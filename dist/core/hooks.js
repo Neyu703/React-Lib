@@ -3,5 +3,7 @@ import { REACT_LIB_STATE_KEY } from "./stateKey.js";
 export const selectReactLib = (root) => root[REACT_LIB_STATE_KEY];
 export const useReactLibSelector = (select) => useSelector((root) => select(selectReactLib(root)));
 export const useReactLibDispatch = () => useDispatch();
+/** Dispatch that also takes thunks (the store needs the thunk middleware, which `configureStore` adds by default). */
+export const useReactLibThunk = () => useDispatch();
 /** For reading the current state inside event handlers and effects without subscribing to it. */
 export const useReactLibStore = () => useStore();

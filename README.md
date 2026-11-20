@@ -7,7 +7,7 @@ Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.1"
+pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.2"
 ```
 
 ```tsx
@@ -56,6 +56,16 @@ Hilfen für App-Tests (vitest/jest + jsdom); `@testing-library/react` ist eine o
 - `renderWithLibStore(ui, store?)`: `Provider` + `render`, liefert `{ store, … }`; `libState(store)` liest den Lib-State.
 - `installDomStubs()`: jsdom kennt `HTMLDialogElement.show/showModal/close` und Pointer-Capture nicht; einmal im Setup aufrufen.
 - `resetReactLib()`: setzt die Handler (`configureReactLib({})`) zurück; nach jedem Test aufrufen.
+
+### Anmeldung (`auth`)
+
+Gegenstück zu `entra_auth.install_auth` (`/api/auth/*`): `LoginGate`, `useAuth` und der Slice `auth`, gelesen über Redux, ohne Context und ohne Props-Kette.
+
+```tsx
+configureReactLib({ authApi: createAuthApi({ headers: () => ({ "X-Token": token() }) }) }) // optional, Standard: /api/auth
+<LoginGate title="Dienstplan"><App /></LoginGate>
+const { user, signOut } = useAuth()
+```
 
 ## Stile
 

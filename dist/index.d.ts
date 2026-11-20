@@ -17,6 +17,7 @@ export * from './modules/dialogs/index.js';
 export * from './modules/portalTheme/index.js';
 export * from './modules/jobs/index.js';
 export * from './modules/colorField/index.js';
+export * from './modules/auth/index.js';
 export * from './modules/updater/index.js';
 export * from './modules/confirm/index.js';
 export * from './core/index.js';

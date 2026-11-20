@@ -1,4 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
+import { authModule } from "../modules/auth/index.js";
 import { colorFieldModule } from "../modules/colorField/index.js";
 import { dialogsModule } from "../modules/dialogs/index.js";
 import { jobsModule } from "../modules/jobs/index.js";
@@ -11,6 +12,7 @@ export const ALL_REACT_LIB_MODULES = [
     dialogsModule,
     jobsModule,
     colorFieldModule,
+    authModule,
     updaterModule,
     confirmModule,
 ];

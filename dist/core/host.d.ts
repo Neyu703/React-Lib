@@ -1,4 +1,5 @@
 import type { DialogBox } from "../modules/dialogs/index.js";
+import type { AuthApi } from "../modules/auth/index.js";
 import type { UpdateStatus } from "../modules/updater/index.js";
 /** What the lib reports to or asks from the host app. Set once at the start with `configureReactLib`. */
 export interface ReactLibHandlers {
@@ -13,6 +14,8 @@ export interface ReactLibHandlers {
     openTab: (tab: string) => void;
     /** The user changed "close after success" in the progress dialog: keep the choice. */
     autoCloseChanged: (value: boolean) => void;
+    /** The REST client of the sign-in (`createAuthApi`); without it the lib talks to `/api/auth`. */
+    authApi?: AuthApi;
 }
 /** Replaces the given handlers; the others keep their harmless defaults. */
 export declare const configureReactLib: (next: Partial<ReactLibHandlers>) => void;

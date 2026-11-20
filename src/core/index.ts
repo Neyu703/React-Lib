@@ -4,6 +4,7 @@ export {
   useReactLibDispatch,
   useReactLibSelector,
   useReactLibStore,
+  useReactLibThunk,
 } from "./hooks.js";
 export {
   ALL_REACT_LIB_MODULES,

@@ -19,7 +19,7 @@ describe("createReactLibReducers", () => {
 
   it("combines the slices of all modules by default", () => {
     const state = createReactLibReducers()(undefined, init);
-    expect(Object.keys(state).sort()).toEqual(["colorField", "dialogs", "jobs", "portalTheme"]);
+    expect(Object.keys(state).sort()).toEqual(["auth", "colorField", "dialogs", "jobs", "portalTheme"]);
     expect(Object.keys(reactLibReducer(undefined, init)).sort()).toEqual(Object.keys(state).sort());
     expect(ALL_REACT_LIB_MODULES).toContain(updaterModule);
   });

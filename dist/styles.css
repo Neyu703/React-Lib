@@ -372,6 +372,58 @@ label.float.missing input {
     animation: skeleton-in 0.2s ease-out 0.15s forwards;
   }
 }
+.auth-gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--label);
+  background: var(--bg-grouped);
+  font-family: inherit;
+}
+.auth-gate > .auth-gate-error {
+  color: var(--red);
+}
+
+.auth-gate-card {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  min-width: min(360px, 100%);
+  padding: 32px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.auth-gate-card h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.auth-gate-card p {
+  margin: 0;
+  color: var(--label-secondary);
+}
+.auth-gate-card .auth-gate-error {
+  color: var(--red);
+}
+
+.auth-gate-button {
+  padding: 10px 22px;
+  color: var(--on-tint);
+  background: var(--tint);
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.auth-gate-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 .search-field {
   display: flex;
   align-items: center;

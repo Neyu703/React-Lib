@@ -1,4 +1,5 @@
 import { combineReducers, type Reducer, type ReducersMapObject, type UnknownAction } from "@reduxjs/toolkit";
+import { authModule, type AuthState } from "../modules/auth/index.js";
 import { colorFieldModule, type ColorFieldState } from "../modules/colorField/index.js";
 import { dialogsModule, type DialogsState } from "../modules/dialogs/index.js";
 import { jobsModule, type JobsState } from "../modules/jobs/index.js";
@@ -21,6 +22,7 @@ export interface ReactLibState {
   dialogs: DialogsState;
   jobs: JobsState;
   colorField: ColorFieldState;
+  auth: AuthState;
 }
 
 /** Every module of the lib, in the order of their slices. */
@@ -29,6 +31,7 @@ export const ALL_REACT_LIB_MODULES: readonly ReactLibModule[] = [
   dialogsModule,
   jobsModule,
   colorFieldModule,
+  authModule,
   updaterModule,
   confirmModule,
 ];
