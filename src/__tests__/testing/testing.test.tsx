@@ -5,6 +5,7 @@ import { customColorsSet } from "../../modules/colorField/index.js";
 import { useReactLibSelector } from "../../core/index.js";
 import {
   createTestStore,
+  fakeAuthApi,
   installDomStubs,
   libState,
   renderWithLibStore,
@@ -68,5 +69,16 @@ describe("resetReactLib", () => {
     resetReactLib();
     reactLibHandlers().openTab("plan");
     expect(openTab).not.toHaveBeenCalled();
+  });
+});
+
+describe("fakeAuthApi", () => {
+  it("answers with the sign-in switched off and takes overrides", async () => {
+    const api = fakeAuthApi();
+    await expect(api.loadSession()).resolves.toEqual({ authRequired: false, user: null });
+    await expect(api.signIn()).resolves.toEqual({ authRequired: false, user: null });
+    await expect(api.signOut()).resolves.toBeUndefined();
+    const custom = fakeAuthApi({ signOut: () => Promise.reject(new Error("x")) });
+    await expect(custom.signOut()).rejects.toThrow("x");
   });
 });

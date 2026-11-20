@@ -7,7 +7,7 @@ Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.2"
+pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.3"
 ```
 
 ```tsx
@@ -66,6 +66,8 @@ configureReactLib({ authApi: createAuthApi({ headers: () => ({ "X-Token": token(
 <LoginGate title="Dienstplan"><App /></LoginGate>
 const { user, signOut } = useAuth()
 ```
+
+Nur die Anmeldemaske ohne alle Komponentenstile: `@use "@neyu703/react-lib/scss/auth-gate";`. In Tests: `fakeAuthApi()` aus `@neyu703/react-lib/testing`.
 
 ## Stile
 

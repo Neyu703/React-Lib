@@ -25,7 +25,7 @@ export type TestStore = EnhancedStore<TestRootState>;
  */
 export function createTestStore(
   preloaded?: Partial<TestRootState>,
-  extraReducers: Record<string, Reducer<unknown, UnknownAction>> = {},
+  extraReducers: ReducersMapObject = {},
 ): TestStore {
   return configureStore({
     reducer: { ...extraReducers, [REACT_LIB_STATE_KEY]: reactLibReducer } as ReducersMapObject,
@@ -46,5 +46,6 @@ export function renderWithLibStore(
   return { store, ...(render(ui, { wrapper }) as RenderResult) };
 }
 
+export { fakeAuthApi } from "./fakeAuthApi.js";
 export { installDomStubs } from "./domStubs.js";
 export { resetReactLib } from "./reset.js";

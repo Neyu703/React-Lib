@@ -20,5 +20,6 @@ export function renderWithLibStore(ui, store = createTestStore()) {
     const wrapper = ({ children }) => createElement(Provider, { store, children });
     return { store, ...render(ui, { wrapper }) };
 }
+export { fakeAuthApi } from "./fakeAuthApi.js";
 export { installDomStubs } from "./domStubs.js";
 export { resetReactLib } from "./reset.js";
