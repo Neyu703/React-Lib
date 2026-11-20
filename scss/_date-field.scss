@@ -1,0 +1,128 @@
+@use "field-variables" as *;
+
+.date-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  input {
+    flex: 1 1 9.4em;
+    min-width: 0;
+    width: 9.4em;
+    height: $control-height;
+    box-sizing: border-box;
+    padding-right: 34px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .date-toggle {
+    position: absolute;
+    right: 3px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--label-secondary);
+
+    &:hover:not(:disabled) {
+      background: var(--fill-hover);
+      color: var(--label);
+    }
+  }
+}
+
+.calendar-popover {
+  position: fixed;
+  z-index: 3000;
+  width: 248px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+}
+
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    font-size: 18px;
+    line-height: 1;
+  }
+  button:hover {
+    background: var(--fill-hover);
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.calendar-weekday {
+  font-size: 11px;
+  color: var(--label-secondary);
+  padding: 4px 0;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+
+  &:hover:not(:disabled) {
+    background: var(--fill-hover);
+  }
+  &.today {
+    border-color: var(--tint);
+  }
+  &.selected,
+  &.selected:hover {
+    background: var(--tint);
+    border-color: var(--tint);
+    color: var(--on-tint);
+    font-weight: 600;
+  }
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+.calendar-foot {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--separator);
+  padding-top: 8px;
+
+  button {
+    border: 0;
+    background: transparent;
+    color: var(--tint);
+    padding: 4px 8px;
+  }
+  button:hover:not(:disabled) {
+    background: var(--fill-hover);
+  }
+}

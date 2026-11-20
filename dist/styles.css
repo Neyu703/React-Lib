@@ -248,6 +248,26 @@ label.float {
   color: inherit;
   font-size: inherit;
 }
+label.float .time-field {
+  display: flex;
+}
+label.float .time-toggle {
+  top: 6px;
+}
+label.float .date-field {
+  display: flex;
+  width: 100%;
+}
+label.float .date-field input {
+  flex: 1 1 auto;
+  width: 100%;
+}
+label.float .date-field input::placeholder {
+  color: transparent;
+}
+label.float:focus-within .date-field input::placeholder {
+  color: var(--label-secondary);
+}
 label.float input,
 label.float select {
   width: 100%;
@@ -350,5 +370,445 @@ label.float.missing input {
   .skeleton,
   .ghost-content :not(:has(*)) {
     animation: skeleton-in 0.2s ease-out 0.15s forwards;
+  }
+}
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 5px 8px 5px 12px;
+  border: 1px solid var(--separator);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--label-secondary);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.search-field .search-icon {
+  flex: none;
+  pointer-events: none;
+}
+.search-field input {
+  appearance: none;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--label);
+  font: inherit;
+  line-height: 1.5;
+  outline: none;
+  box-shadow: none;
+}
+.search-field input::placeholder {
+  color: var(--label-secondary);
+  opacity: 1;
+}
+.search-field input::-webkit-search-cancel-button, .search-field input::-webkit-search-decoration {
+  appearance: none;
+}
+.search-field:focus-within {
+  border-color: var(--tint);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 16%, transparent);
+}
+.search-field:focus-within .search-icon {
+  color: var(--tint);
+}
+.search-field .search-clear {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--label-secondary);
+  cursor: pointer;
+}
+.search-field .search-clear[hidden] {
+  display: none;
+}
+.search-field .search-clear:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 1px;
+}
+.search-field .search-clear:active {
+  background: color-mix(in srgb, var(--tint) 18%, transparent);
+  color: var(--label);
+}
+
+@media (hover: hover) {
+  .search-field:hover:not(:focus-within) {
+    border-color: var(--label-secondary);
+  }
+  .search-field .search-clear:hover {
+    background: color-mix(in srgb, var(--label-secondary) 12%, transparent);
+    color: var(--label);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-field {
+    transition: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .search-field:focus-within {
+    outline: 2px solid var(--tint);
+    outline-offset: 2px;
+  }
+}
+.date-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.date-field input {
+  flex: 1 1 9.4em;
+  min-width: 0;
+  width: 9.4em;
+  height: 34px;
+  box-sizing: border-box;
+  padding-right: 34px;
+  font-variant-numeric: tabular-nums;
+}
+.date-field .date-toggle {
+  position: absolute;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--label-secondary);
+}
+.date-field .date-toggle:hover:not(:disabled) {
+  background: var(--fill-hover);
+  color: var(--label);
+}
+
+.calendar-popover {
+  position: fixed;
+  z-index: 3000;
+  width: 248px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+}
+
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.calendar-head button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+}
+.calendar-head button:hover {
+  background: var(--fill-hover);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.calendar-weekday {
+  font-size: 11px;
+  color: var(--label-secondary);
+  padding: 4px 0;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.calendar-day:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+.calendar-day.today {
+  border-color: var(--tint);
+}
+.calendar-day.selected, .calendar-day.selected:hover {
+  background: var(--tint);
+  border-color: var(--tint);
+  color: var(--on-tint);
+  font-weight: 600;
+}
+.calendar-day:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.calendar-foot {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--separator);
+  padding-top: 8px;
+}
+.calendar-foot button {
+  border: 0;
+  background: transparent;
+  color: var(--tint);
+  padding: 4px 8px;
+}
+.calendar-foot button:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.time-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.time-field input {
+  flex: 1 1 6.2em;
+  min-width: 0;
+  width: 6.2em;
+  height: 34px;
+  box-sizing: border-box;
+  padding-right: 34px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.time-field .time-toggle {
+  position: absolute;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--label-secondary);
+}
+.time-field .time-toggle:hover {
+  background: var(--fill-hover);
+  color: var(--label);
+}
+
+.time-popover {
+  position: fixed;
+  z-index: 3000;
+  width: 200px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+}
+
+.time-wheels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.time-band {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 36px;
+  transform: translateY(-50%);
+  border-radius: 8px;
+  background: var(--fill-hover);
+  pointer-events: none;
+}
+
+.time-colon {
+  position: relative;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.time-wheel {
+  position: relative;
+  width: 72px;
+  height: 180px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-snap-type: y mandatory;
+  padding-block: 72px;
+  box-sizing: border-box;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+}
+.time-wheel::-webkit-scrollbar {
+  display: none;
+}
+.time-wheel:active {
+  cursor: grabbing;
+}
+
+.time-wheel-item {
+  height: 36px;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: center;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview-select {
+  position: relative;
+  width: 160px;
+  max-width: 100%;
+}
+
+.preview-select .preview-select-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 16px 32px 3px 12px;
+  text-align: left;
+}
+
+.preview-select-label {
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  font-size: 10px;
+  color: var(--label-secondary);
+  pointer-events: none;
+}
+
+.preview-select-value {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+.preview-select-arrow {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: var(--label-secondary);
+  transition: transform 0.15s ease;
+}
+
+.preview-select-trigger[aria-expanded=true] .preview-select-arrow {
+  transform: rotate(180deg);
+}
+
+.preview-select-trigger:focus-visible,
+.preview-select-trigger[aria-expanded=true] {
+  outline: none;
+  border-color: var(--tint);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 16%, transparent);
+}
+
+.preview-select-trigger:focus-visible .preview-select-label {
+  color: var(--tint);
+}
+
+.preview-select-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 15;
+  width: max-content;
+  min-width: 100%;
+  max-width: min(320px, 100vw - 48px);
+  max-height: min(320px, 50dvh);
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid var(--separator);
+  border-radius: 9px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.preview-select-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 32px;
+  border: 0;
+  border-radius: 5px;
+  padding: 6px 9px;
+  text-align: left;
+  background: transparent;
+  font-size: 13px;
+}
+
+.preview-select-options button span {
+  overflow-wrap: anywhere;
+}
+
+.preview-select-options button svg {
+  flex: none;
+  color: var(--tint);
+}
+
+.preview-select-options button[aria-selected=true] {
+  font-weight: 600;
+}
+
+.preview-select-options button.preview-active {
+  background: color-mix(in srgb, var(--tint) 12%, var(--bg-card));
+}
+
+.preview-select-options button:active {
+  background: color-mix(in srgb, var(--tint) 20%, var(--bg-card));
+}
+
+@media (hover: hover) {
+  .preview-select-options button:hover {
+    background: color-mix(in srgb, var(--tint) 12%, var(--bg-card));
+  }
+}
+@media (pointer: coarse) {
+  .preview-select .preview-select-trigger,
+  .preview-select-options button {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preview-select-arrow {
+    transition: none;
   }
 }

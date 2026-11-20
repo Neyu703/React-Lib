@@ -1,6 +1,6 @@
 {
   "name": "@neyu703/react-lib",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Gemeinsame React-Komponenten, Tokens und Sass-Mixins für KTE-Programme",
   "private": true,
   "type": "module",
@@ -15,7 +15,8 @@
     "./scss/base": "./scss/base.scss",
     "./scss/styles": "./scss/styles.scss",
     "./scss/mixins": "./scss/_mixins.scss",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./search-field.css": "./dist/search-field.css"
   },
   "files": [
     "dist",
@@ -27,7 +28,7 @@
     "**/*.scss"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.json && sass --no-source-map --style=expanded scss/base.scss:dist/base.css scss/styles.scss:dist/styles.css",
+    "build": "tsc --project tsconfig.json && sass --no-source-map --style=expanded scss/base.scss:dist/base.css scss/styles.scss:dist/styles.css scss/search-field-page.scss:dist/search-field.css",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "test": "vitest run --coverage"
   },

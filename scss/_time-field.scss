@@ -1,0 +1,109 @@
+@use "field-variables" as *;
+
+.time-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  input {
+    flex: 1 1 6.2em;
+    min-width: 0;
+    width: 6.2em;
+    height: $control-height;
+    box-sizing: border-box;
+    padding-right: 34px;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  .time-toggle {
+    position: absolute;
+    right: 3px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--label-secondary);
+
+    &:hover {
+      background: var(--fill-hover);
+      color: var(--label);
+    }
+  }
+}
+
+.time-popover {
+  position: fixed;
+  z-index: 3000;
+  width: 200px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-weight: 400;
+}
+
+.time-wheels {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+// Highlight band behind the centre row of both wheels
+.time-band {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 36px;
+  transform: translateY(-50%);
+  border-radius: 8px;
+  background: var(--fill-hover);
+  pointer-events: none;
+}
+
+.time-colon {
+  position: relative;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.time-wheel {
+  position: relative;
+  width: 72px;
+  height: 180px; // 5 rows of 36px
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-snap-type: y mandatory;
+  padding-block: 72px;
+  box-sizing: border-box;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.time-wheel-item {
+  height: 36px;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: center;
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}

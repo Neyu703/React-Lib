@@ -4,4 +4,12 @@ export { CheckIcon, CloseIcon, EditIcon, PlusIcon, SwapIcon, TrashIcon } from '.
 export { InfoTip } from './InfoTip.js';
 export { WizardSteps } from './WizardSteps.js';
 export { Float } from './Float.js';
+export { SearchField } from './SearchField.js';
 export { Ghost, Loading, Skeleton, SkeletonGrid, SkeletonLines } from './Skeleton.js';
+export { CalendarPopover } from './CalendarPopover.js';
+export { DateField } from './DateField.js';
+export { WeekField } from './WeekField.js';
+export { TimeField } from './TimeField.js';
+export { Wheel } from './Wheel.js';
+export { PreviewSelect } from './PreviewSelect.js';
+export { addDays, isoWeekOf, mondayOf, mondayOfIsoWeek, pad, parseIso, toIso } from './dates.js';

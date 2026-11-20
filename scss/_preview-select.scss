@@ -1,0 +1,109 @@
+.preview-select {
+  position: relative;
+  width: 160px;
+  max-width: 100%;
+}
+.preview-select .preview-select-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 16px 32px 3px 12px;
+  text-align: left;
+}
+.preview-select-label {
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  font-size: 10px;
+  color: var(--label-secondary);
+  pointer-events: none;
+}
+.preview-select-value {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+.preview-select-arrow {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  color: var(--label-secondary);
+  transition: transform 0.15s ease;
+}
+.preview-select-trigger[aria-expanded="true"] .preview-select-arrow {
+  transform: rotate(180deg);
+}
+.preview-select-trigger:focus-visible,
+.preview-select-trigger[aria-expanded="true"] {
+  outline: none;
+  border-color: var(--tint);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 16%, transparent);
+}
+.preview-select-trigger:focus-visible .preview-select-label {
+  color: var(--tint);
+}
+.preview-select-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 15;
+  width: max-content;
+  min-width: 100%;
+  max-width: min(320px, calc(100vw - 48px));
+  max-height: min(320px, 50dvh);
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid var(--separator);
+  border-radius: 9px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+}
+.preview-select-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 32px;
+  border: 0;
+  border-radius: 5px;
+  padding: 6px 9px;
+  text-align: left;
+  background: transparent;
+  font-size: 13px;
+}
+.preview-select-options button span {
+  overflow-wrap: anywhere;
+}
+.preview-select-options button svg {
+  flex: none;
+  color: var(--tint);
+}
+.preview-select-options button[aria-selected="true"] {
+  font-weight: 600;
+}
+.preview-select-options button.preview-active {
+  background: color-mix(in srgb, var(--tint) 12%, var(--bg-card));
+}
+.preview-select-options button:active {
+  background: color-mix(in srgb, var(--tint) 20%, var(--bg-card));
+}
+@media (hover: hover) {
+  .preview-select-options button:hover {
+    background: color-mix(in srgb, var(--tint) 12%, var(--bg-card));
+  }
+}
+@media (pointer: coarse) {
+  .preview-select .preview-select-trigger,
+  .preview-select-options button {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preview-select-arrow {
+    transition: none;
+  }
+}

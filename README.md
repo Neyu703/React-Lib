@@ -7,7 +7,7 @@ Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.3.0"
+pnpm add "github:Neyu703/React-Lib#v0.4.0"
 ```
 
 ```tsx
@@ -27,7 +27,7 @@ Die gemeinsame Segment-Auswahl unterstützt bis zu acht Optionen. Die optionale 
 
 ## Komponenten
 
-`Segmented`, `IconButton` (+ Icons), `InfoTip`, `WizardSteps`, `Float`, `Skeleton`/`SkeletonLines`/`SkeletonGrid`/`Loading`/`Ghost`. Die Stile in `scss/styles` nutzen die Tokens von `scss/base` (`--tint`, `--label`, `--separator`, `--bg-card`, `--fill`, `--red` …); eine App ohne `scss/base` definiert diese Tokens als Aliase auf ihre eigenen.
+`Segmented`, `IconButton` (+ Icons), `InfoTip`, `WizardSteps`, `Float`, `Skeleton`/`SkeletonLines`/`SkeletonGrid`/`Loading`/`Ghost`, `SearchField`, `DateField`, `WeekField`, `CalendarPopover`, `TimeField`/`Wheel`, `PreviewSelect` sowie die Datumshelfer (`addDays`, `mondayOf`, `isoWeekOf`, …). Die Stile in `scss/styles` nutzen die Tokens von `scss/base` (`--tint`, `--on-tint`, `--label`, `--separator`, `--bg-card`, `--fill`, `--red`, `--shadow-card` …); eine App ohne `scss/base` definiert diese Tokens als Aliase auf ihre eigenen.
 
 ## Stile
 
@@ -44,7 +44,7 @@ import "@neyu703/react-lib/base.css";   // gebautes CSS ohne Sass
 import "@neyu703/react-lib/styles.css";
 ```
 
-Statische Seiten ohne Build kopieren `node_modules/@neyu703/react-lib/dist/base.css` neben ihre `index.html` (Beispiel: `coords-checklist`, Skript `sync:react-lib`).
+Eine Seite nur mit dem Suchfeld nutzt `dist/search-field.css` (`@neyu703/react-lib/search-field.css`). Statische Seiten ohne Build kopieren `node_modules/@neyu703/react-lib/dist/base.css` neben ihre `index.html` (Beispiel: `coords-checklist`, Skript `sync:react-lib`).
 
 ### Fenstergrößen
 

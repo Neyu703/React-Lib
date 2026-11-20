@@ -5,6 +5,33 @@ label.float {
   color: inherit;
   font-size: inherit;
 
+  .time-field {
+    display: flex;
+  }
+
+  .time-toggle {
+    top: 6px;
+  }
+
+  .date-field {
+    display: flex;
+    width: 100%;
+
+    input {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    input::placeholder {
+      // the placeholder would collide with the label while it sits in the field
+      color: transparent;
+    }
+  }
+
+  &:focus-within .date-field input::placeholder {
+    color: var(--label-secondary);
+  }
+
   input,
   select {
     width: 100%;
