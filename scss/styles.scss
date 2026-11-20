@@ -1,2 +1,7 @@
-// Component styles of all lib components.
+// Component styles of all lib components. Expects the tokens of scss/base (an app can alias its own).
 @use "segmented";
+@use "icon-button";
+@use "info-tip";
+@use "wizard-steps";
+@use "float";
+@use "skeleton";

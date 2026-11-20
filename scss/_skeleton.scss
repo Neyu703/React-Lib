@@ -1,0 +1,75 @@
+// Placeholder for content that is still loading (Skeleton, Loading, Ghost).
+$shimmer-gradient: linear-gradient(90deg, var(--fill) 25%, var(--fill-hover) 50%, var(--fill) 75%);
+
+@mixin shimmer($important: "") {
+  background: $shimmer-gradient 0 0 / 200% 100% #{$important};
+  border-radius: 4px;
+  // Visible only after a short delay: a quick answer never shows a placeholder
+  opacity: 0;
+  animation:
+    skeleton-in 0.2s ease-out 0.15s forwards,
+    skeleton-shimmer 1.2s linear infinite;
+}
+
+.skeleton {
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  height: 1em;
+  @include shimmer;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-lines,
+.skeleton-grid {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.skeleton-lines .skeleton {
+  display: block;
+}
+
+.skeleton-grid {
+  gap: 6px;
+}
+
+.loading {
+  width: 100%;
+}
+
+// Ghost: the real layout with placeholder data; leaves (text, fields, cells) shimmer, the dimensions stay.
+.ghost-content {
+  pointer-events: none;
+  user-select: none;
+
+  :not(:has(*)) {
+    color: transparent !important;
+    border-color: transparent !important;
+    text-shadow: none !important;
+    @include shimmer("!important");
+  }
+}
+
+@keyframes skeleton-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .ghost-content :not(:has(*)) {
+    animation: skeleton-in 0.2s ease-out 0.15s forwards;
+  }
+}

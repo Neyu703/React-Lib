@@ -7,7 +7,7 @@ Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.2.0"
+pnpm add "github:Neyu703/React-Lib#v0.3.0"
 ```
 
 ```tsx
@@ -24,6 +24,10 @@ import '@neyu703/react-lib/styles.css'
 ```
 
 Die gemeinsame Segment-Auswahl unterstützt bis zu acht Optionen. Die optionale dritte Angabe ist ein Tooltip. Überschreibt eine App `--segmented-track`, `--segmented-thumb`, `--segmented-muted`, `--segmented-selected` oder `--segmented-focus`, verwendet die Komponente ihr Farbschema. Mit `--segmented-border`, `--segmented-thumb-border`, `--segmented-shadow`, `--segmented-padding` und `--segmented-font-size` lassen sich Umrandung, Schatten und Abstände anpassen.
+
+## Komponenten
+
+`Segmented`, `IconButton` (+ Icons), `InfoTip`, `WizardSteps`, `Float`, `Skeleton`/`SkeletonLines`/`SkeletonGrid`/`Loading`/`Ghost`. Die Stile in `scss/styles` nutzen die Tokens von `scss/base` (`--tint`, `--label`, `--separator`, `--bg-card`, `--fill`, `--red` …); eine App ohne `scss/base` definiert diese Tokens als Aliase auf ihre eigenen.
 
 ## Stile
 
