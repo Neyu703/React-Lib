@@ -43,9 +43,9 @@ Gleicher Modulname auf beiden Seiten, Router mit `install_*(app)`. Ziel-Zuordnun
 
 | Modul (Lib) | Python-Paket | Stand |
 |---|---|---|
-| `auth` | `entra_auth` (`install_auth`, `/api/auth/*`) | fertig; das alte `entra_auth/frontend` wird entfernt |
-| `jobs` | `job_progress` (`install_jobs`, `GET /api/job?since=`) | in Arbeit |
-| `updater` | `auto_updater` (`install_update`, `/api/update`, `/api/update/start`) | in Arbeit |
+| `auth` | `entra_auth` (`install_auth`, `/api/auth/*`) | fertig; `entra_auth/frontend` ist entfernt, die Lib liefert das Frontend |
+| `jobs` | `job_progress` (`install_jobs`, `GET /api/job?since=`) | fertig, Dienstplan nutzt es |
+| `updater` | `auto_updater` (`install_update`, `/api/update`, `/api/update/start`) | fertig, Dienstplan nutzt es |
 | `dialogs`, `portalTheme`, `colorField`, `confirm` | nur Frontend (die App speichert Dialogpositionen/Farben über `configureReactLib`-Handler) | fertig |
 
 REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon FastAPI), ConfigEditor, StoreRename (`store_rename/webserver/`), EXEBuilder (bereits FastAPI-artig).
@@ -61,12 +61,12 @@ REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon 
 | Repo | Inhalt |
 |---|---|
 | React-Lib | Module + einfache Komponenten, 436 Tests, 100 % |
-| Dienstplan | Komponenten, Dialoge, Anmeldung aus der Lib; Backend-Umstellung auf `job_progress`/`install_update` in Arbeit |
+| Dienstplan | Komponenten, Dialoge, Anmeldung aus der Lib; Backend nutzt `job_progress`/`install_update` aus Packages |
 | Schichtplan | Redux-Store, `LoginGate` aus der Lib, SCSS |
 | ConfigEditor | FastAPI-Backend, Redux-Store, SCSS, `SearchField`, 100 % |
 | EXEBuilder | Lib-`Skeleton`, Token-Aliase, Frontend-Tests 100 % |
-| StoreRename | FastAPI-Backend (`webserver/`), Host-/Origin-Prüfung gegen DNS-Rebinding; React-Frontend steht noch aus (Plan: `docs/react-migration-plan.md`) |
-| Misc/Packages | in Arbeit: `job_progress`, `install_update` |
+| StoreRename | FastAPI-Backend (`webserver/`), Host-/Origin-Prüfung gegen DNS-Rebinding; React-Frontend in Arbeit (Plan: `docs/react-migration-plan.md`) |
+| Misc/Packages | `job_progress`, `install_update` fertig; `entra_auth/frontend` entfernt |
 | StrongCSVVisualizer, coords-checklist, WebDeployment | `main` auf Vorumbau-Stand zurückgesetzt (Revert); `base-css` ist archiviert, die Lib enthält Tokens, Reset und Mixins |
 
 ## Bekannte Lücken und offene Punkte
@@ -74,6 +74,6 @@ REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon 
 - Kein Browser-Lauf: Aussehen der Felder, Dialoge, Anmeldung gegen Entra, Jobfortschritt, Farbpalette sind nur über Tests abgesichert. Die Lib-Stile laden jetzt vor den App-Stilen und können die Kaskade verändern.
 - Lib fehlt noch: eine Navigations-Komponente (`SideNav` bleibt im Dienstplan). Die Basis setzt eine globale Body-Schrift, die Apps überschreiben müssen. Neu in `rc.4` (`IconButton` mit Text, `SearchField`-Platzhalter, `Button`, `StatusPill`, `Select`, Modul `tabs`) sind nur über Tests abgesichert.
 - `Card` (Collapsible) und `SideNav` bleiben im Dienstplan, weil ihre Stile am Plan-Layout hängen.
-- StoreRename-Frontend (React/Redux) ist noch nicht begonnen; der Plan liegt im Repo.
+- StoreRename-Frontend (React/Redux) wird gebaut (Plan im Repo). EXEBuilder ist FastAPI, nutzt aber eigene SSE-Streams (`/api/events`, `/api/stream`) statt `install_jobs`/`install_update`; eine Angleichung ist offen.
 - `Dienstplan`: `RhythmWizard`-Test „without showProblems …" ist unter Last unzuverlässig (läuft allein oder als Datei grün), unabhängig vom Umbau.
 - Commits der Agenten sind teils von Hand statt mit `smart-commit` entstanden (Agenten können den Skill nicht aufrufen).
