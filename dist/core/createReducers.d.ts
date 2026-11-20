@@ -4,6 +4,7 @@ import { type ColorFieldState } from "../modules/colorField/index.js";
 import { type DialogsState } from "../modules/dialogs/index.js";
 import { type JobsState } from "../modules/jobs/index.js";
 import { type PortalThemeState } from "../modules/portalTheme/index.js";
+import { type TabsState } from "../modules/tabs/index.js";
 /** The shape every lib module exports: an optional slice (`reducerKey` + `reducer`) and its components. Modules without state leave the first two out. */
 export type ReactLibModule = {
     reducerKey: string;
@@ -21,6 +22,7 @@ export interface ReactLibState {
     jobs: JobsState;
     colorField: ColorFieldState;
     auth: AuthState;
+    tabs: TabsState;
 }
 /** Every module of the lib, in the order of their slices. */
 export declare const ALL_REACT_LIB_MODULES: readonly ReactLibModule[];

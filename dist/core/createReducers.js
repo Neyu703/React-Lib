@@ -4,6 +4,7 @@ import { colorFieldModule } from "../modules/colorField/index.js";
 import { dialogsModule } from "../modules/dialogs/index.js";
 import { jobsModule } from "../modules/jobs/index.js";
 import { portalThemeModule } from "../modules/portalTheme/index.js";
+import { tabsModule } from "../modules/tabs/index.js";
 import { updaterModule } from "../modules/updater/index.js";
 import { confirmModule } from "../modules/confirm/index.js";
 /** Every module of the lib, in the order of their slices. */
@@ -13,6 +14,7 @@ export const ALL_REACT_LIB_MODULES = [
     jobsModule,
     colorFieldModule,
     authModule,
+    tabsModule,
     updaterModule,
     confirmModule,
 ];

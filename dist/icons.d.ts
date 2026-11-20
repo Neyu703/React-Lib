@@ -4,3 +4,5 @@ export declare const PlusIcon: () => import("react").JSX.Element;
 export declare const EditIcon: () => import("react").JSX.Element;
 export declare const SwapIcon: () => import("react").JSX.Element;
 export declare const CloseIcon: () => import("react").JSX.Element;
+export declare const RefreshIcon: () => import("react").JSX.Element;
+export declare const ExitIcon: () => import("react").JSX.Element;

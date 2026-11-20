@@ -1,6 +1,6 @@
 # Architektur: modulare Apps mit React-Lib
 
-Stand: 2026-11-20, Branch `react-lib-refactor` (Lib `v0.5.0-rc.3`). Dieses Dokument hält die Entscheidungen fest, damit sie nicht jedes Mal neu besprochen werden.
+Stand: 2026-11-20, Branch `react-lib-refactor` (Lib `v0.5.0-rc.4`). Dieses Dokument hält die Entscheidungen fest, damit sie nicht jedes Mal neu besprochen werden.
 
 ## Ziel
 
@@ -15,9 +15,9 @@ Jedes Python-Programm hat dieselbe Struktur: **React + Redux Toolkit + TypeScrip
 
 ```
 src/
-  *.tsx                 einfache Komponenten ohne Zustand (Segmented, IconButton, SearchField, DateField …)
+  *.tsx                 einfache Komponenten ohne Zustand (Segmented, IconButton, Button, StatusPill, Select, SearchField, DateField …)
   core/                 REACT_LIB_STATE_KEY, reactLibReducer, createReactLibReducers, configureReactLib, Hooks
-  modules/<name>/       dialogs, portalTheme, jobs, colorField, auth, updater, confirm
+  modules/<name>/       dialogs, portalTheme, jobs, colorField, auth, updater, confirm, tabs
     index.ts            exportiert <name>Module = { reducerKey?, reducer?, components }, Komponenten, Typen
     types.ts            REST-Verträge (das Python-Gegenstück spiegelt sie 1:1)
     slice.ts            Redux-Slice (falls das Modul Zustand hat)
@@ -53,14 +53,14 @@ REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon 
 ## Release und Branches
 
 - Der gesamte Umbau läuft auf dem Branch **`react-lib-refactor`** in allen betroffenen Repos. Auf `main` liegt der Stand vor dem Umbau (die Lib-Tags bis `v0.4.0` und die gepushten Lib-Commits auf `main` sind bewusst nicht zurückgenommen, die alten Apps pinnen `v0.1.0`).
-- Lib-Release: Version in `package.json`, `pnpm build`, `pnpm test` (100 %), Commit inkl. `dist`, Tag `vX.Y.Z`, Push von Branch und Tag. Apps pinnen den Tag (`github:Neyu703/React-Lib#v0.5.0-rc.3`), nie einen lokalen `file:`-Link.
+- Lib-Release: Version in `package.json`, `pnpm build`, `pnpm test` (100 %), Commit inkl. `dist`, Tag `vX.Y.Z`, Push von Branch und Tag. Apps pinnen den Tag (`github:Neyu703/React-Lib#v0.5.0-rc.4`), nie einen lokalen `file:`-Link.
 - Vor dem Merge nach `main`: alle Apps im Browser prüfen (bisher nur über Tests abgesichert), Lib als `v0.5.0` taggen und die Pins von `-rc.N` auf `0.5.0` stellen.
 
 ## Stand der Repos (react-lib-refactor)
 
 | Repo | Inhalt |
 |---|---|
-| React-Lib | Module + einfache Komponenten, 408 Tests, 100 % |
+| React-Lib | Module + einfache Komponenten, 436 Tests, 100 % |
 | Dienstplan | Komponenten, Dialoge, Anmeldung aus der Lib; Backend-Umstellung auf `job_progress`/`install_update` in Arbeit |
 | Schichtplan | Redux-Store, `LoginGate` aus der Lib, SCSS |
 | ConfigEditor | FastAPI-Backend, Redux-Store, SCSS, `SearchField`, 100 % |
@@ -72,7 +72,7 @@ REST-Basis ist **FastAPI überall**. Umgestellt: Dienstplan, Schichtplan (schon 
 ## Bekannte Lücken und offene Punkte
 
 - Kein Browser-Lauf: Aussehen der Felder, Dialoge, Anmeldung gegen Entra, Jobfortschritt, Farbpalette sind nur über Tests abgesichert. Die Lib-Stile laden jetzt vor den App-Stilen und können die Kaskade verändern.
-- Lib fehlt: Textvariante von `IconButton`, Select-/Navigations-/Button-/Statuspillen-Komponente, `SearchField` ohne eigenen Platzhalter, ein Tab-Bar-Modul. Die Basis setzt eine globale Body-Schrift, die Apps überschreiben müssen.
+- Lib fehlt noch: eine Navigations-Komponente (`SideNav` bleibt im Dienstplan). Die Basis setzt eine globale Body-Schrift, die Apps überschreiben müssen. Neu in `rc.4` (`IconButton` mit Text, `SearchField`-Platzhalter, `Button`, `StatusPill`, `Select`, Modul `tabs`) sind nur über Tests abgesichert.
 - `Card` (Collapsible) und `SideNav` bleiben im Dienstplan, weil ihre Stile am Plan-Layout hängen.
 - StoreRename-Frontend (React/Redux) ist noch nicht begonnen; der Plan liegt im Repo.
 - `Dienstplan`: `RhythmWizard`-Test „without showProblems …" ist unter Last unzuverlässig (läuft allein oder als Datei grün), unabhängig vom Umbau.

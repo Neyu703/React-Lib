@@ -9,7 +9,7 @@ Entscheidungen, Aufbau, Checkliste zum Anbinden einer App und Stand aller Repos:
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.3"
+pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.4"
 ```
 
 ```tsx
@@ -29,7 +29,31 @@ Die gemeinsame Segment-Auswahl unterstützt bis zu acht Optionen. Die optionale 
 
 ## Komponenten
 
-`Segmented`, `IconButton` (+ Icons), `InfoTip`, `WizardSteps`, `Float`, `Skeleton`/`SkeletonLines`/`SkeletonGrid`/`Loading`/`Ghost`, `SearchField`, `DateField`, `WeekField`, `CalendarPopover`, `TimeField`/`Wheel`, `PreviewSelect` sowie die Datumshelfer (`addDays`, `mondayOf`, `isoWeekOf`, …). Die Stile in `scss/styles` nutzen die Tokens von `scss/base` (`--tint`, `--on-tint`, `--label`, `--separator`, `--bg-card`, `--fill`, `--red`, `--shadow-card` …); eine App ohne `scss/base` definiert diese Tokens als Aliase auf ihre eigenen.
+`Segmented`, `IconButton` (+ Icons), `Button`, `StatusPill`, `Select`, `InfoTip`, `WizardSteps`, `Float`, `Skeleton`/`SkeletonLines`/`SkeletonGrid`/`Loading`/`Ghost`, `SearchField`, `DateField`, `WeekField`, `CalendarPopover`, `TimeField`/`Wheel`, `PreviewSelect` sowie die Datumshelfer (`addDays`, `mondayOf`, `isoWeekOf`, …). Die Stile in `scss/styles` nutzen die Tokens von `scss/base` (`--tint`, `--on-tint`, `--label`, `--separator`, `--bg-card`, `--fill`, `--red`, `--shadow-card` …); eine App ohne `scss/base` definiert diese Tokens als Aliase auf ihre eigenen.
+
+### Buttons, Auswahl und Status
+
+```tsx
+<IconButton icon="refresh" label="Neu laden" text="Aktualisieren" />  // Icon + sichtbarer Text, aria-label bleibt `label`
+<SearchField id="q" label="Suche" placeholder="Name oder Nummer" value={q} onChange={setQ} />  // Platzhalter, Standard = label
+<Button variant="primary" size="small" onClick={save}>Speichern</Button>  // primary | secondary (Standard) | danger; type="button"
+<StatusPill tone="ok" live>Verbunden</StatusPill>  // ok | warn | fail | neutral; live = role="status"
+<Float label="Status"><Select id="s" label="Status" value={v} onChange={setV} options={[["a", "Alpha"], ["b", "Beta"]]} /></Float>
+```
+
+`IconButton` kennt zusätzlich die Icons `refresh` und `exit` (`RefreshIcon`, `ExitIcon`). `Select` ist ein natives `<select>` mit `value`/`onChange(value)` wie `DateField`; in `Float` liegt das Label oben im Feld.
+
+### Tabs (react-redux)
+
+`Tabs` hält die Auswahl im Slice `tabs` (je `group`), ohne `value`/`onChange`; `useActiveTab(group, fallback)` liest sie an anderer Stelle, `tabSelected({ group, tab })` setzt sie von außen.
+
+```tsx
+<Tabs group="settings" label="Bereiche" defaultTab="general"
+  tabs={[{ id: "general", label: "Allgemein" }, { id: "log", label: "Protokoll", badge: 3 }]} />
+const active = useActiveTab("settings", "general")
+```
+
+Pfeiltasten, Pos1 und Ende wechseln den Tab (`role="tablist"`/`tab`, `aria-selected`).
 
 ### Dialoge (react-redux)
 
@@ -43,6 +67,7 @@ Die Dialog-Bausteine liegen als Module in `src/modules/<name>/` und lesen/schrei
 | `colorField` | `ColorField` | `colorField` |
 | `updater` | `UpdateDialog`, `ChangelogDialog` | keiner |
 | `confirm` | `ConfirmView` | keiner |
+| `tabs` | `Tabs`, `useActiveTab` | `tabs` |
 
 **Form eines Moduls** (`index.ts`): ein Objekt `<name>Module = { reducerKey, reducer, components }` (bei Modulen ohne State nur `components`), dazu die Komponenten, Actions und Typen als benannte Exporte. Module greifen nur über das `index.ts` eines anderen Moduls aufeinander zu (Test `moduleBoundaries.test.ts`). Gemeinsames ohne Modul-Charakter liegt in `src/core/`: `configureReactLib`/`reactLibHandlers`, `useReactLibSelector`/`useReactLibDispatch`/`useReactLibStore`/`selectReactLib`, `REACT_LIB_STATE_KEY`, `createReactLibReducers`. Alles bleibt wie bisher aus dem Paket-Einstieg importierbar.
 
