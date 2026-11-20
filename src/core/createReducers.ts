@@ -4,6 +4,7 @@ import { colorFieldModule, type ColorFieldState } from "../modules/colorField/in
 import { dialogsModule, type DialogsState } from "../modules/dialogs/index.js";
 import { jobsModule, type JobsState } from "../modules/jobs/index.js";
 import { portalThemeModule, type PortalThemeState } from "../modules/portalTheme/index.js";
+import { tabsModule, type TabsState } from "../modules/tabs/index.js";
 import { updaterModule } from "../modules/updater/index.js";
 import { confirmModule } from "../modules/confirm/index.js";
 
@@ -23,6 +24,7 @@ export interface ReactLibState {
   jobs: JobsState;
   colorField: ColorFieldState;
   auth: AuthState;
+  tabs: TabsState;
 }
 
 /** Every module of the lib, in the order of their slices. */
@@ -32,6 +34,7 @@ export const ALL_REACT_LIB_MODULES: readonly ReactLibModule[] = [
   jobsModule,
   colorFieldModule,
   authModule,
+  tabsModule,
   updaterModule,
   confirmModule,
 ];
