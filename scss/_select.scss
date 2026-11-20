@@ -1,0 +1,38 @@
+.select {
+  appearance: none;
+  min-height: var(--tap-target, 36px);
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-control, 8px);
+  background-color: var(--bg-card);
+  // chevron in the secondary label colour
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--label-secondary) 50%),
+    linear-gradient(135deg, var(--label-secondary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--label);
+  font: inherit;
+  cursor: pointer;
+
+  &:focus {
+    border-color: var(--tint);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tint) 16%, transparent);
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+// Inside a floating label the label sits above the value (see _float.scss)
+label.float > .select {
+  width: 100%;
+  min-height: 40px;
+  padding: 16px 32px 3px 12px;
+}

@@ -14,3 +14,15 @@
   background: var(--bg-card);
   color: var(--label);
 }
+
+// Icon plus visible text
+.icon-button.icon-button-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  min-height: var(--tap-target, 34px);
+  padding: 0 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}

@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { CheckIcon, CloseIcon, EditIcon, PlusIcon, SwapIcon, TrashIcon } from "../index.js";
+import { CheckIcon, CloseIcon, EditIcon, ExitIcon, PlusIcon, RefreshIcon, SwapIcon, TrashIcon } from "../index.js";
 
 describe("icons", () => {
   it.each([
@@ -10,6 +10,8 @@ describe("icons", () => {
     ["EditIcon", EditIcon],
     ["SwapIcon", SwapIcon],
     ["CloseIcon", CloseIcon],
+    ["RefreshIcon", RefreshIcon],
+    ["ExitIcon", ExitIcon],
   ])("%s is a decorative 16px stroke icon", (_name, Icon) => {
     const { container } = render(<Icon />);
     const svg = container.querySelector("svg") as SVGElement;

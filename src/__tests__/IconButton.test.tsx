@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { IconButton, type IconName } from "../index.js";
 
-const ICONS: IconName[] = ["edit", "trash", "save", "close", "plus", "swap"];
+const ICONS: IconName[] = ["edit", "trash", "save", "close", "plus", "swap", "refresh", "exit"];
 
 describe("IconButton", () => {
   it.each(ICONS)("draws the %s icon as one svg path", (icon) => {
@@ -100,5 +100,33 @@ describe("IconButton", () => {
     expect(screen.getByRole("button")).toBeDisabled();
     await userEvent.click(screen.getByRole("button"));
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("IconButton with text", () => {
+  it("shows the text next to the icon and keeps label as accessible name", () => {
+    render(
+      <IconButton
+        icon="refresh"
+        label="Neu laden"
+        text="Aktualisieren"
+      />,
+    );
+    const button = screen.getByRole("button", { name: "Neu laden" });
+    expect(button).toHaveClass("icon-button", "icon-button-text");
+    expect(button).toHaveTextContent("Aktualisieren");
+    expect(button.querySelector("svg")).not.toBeNull();
+  });
+
+  it("renders no text node without text", () => {
+    render(
+      <IconButton
+        icon="exit"
+        label="Beenden"
+      />,
+    );
+    const button = screen.getByRole("button");
+    expect(button).not.toHaveClass("icon-button-text");
+    expect(button.querySelector("span")).toBeNull();
   });
 });

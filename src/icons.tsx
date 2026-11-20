@@ -45,3 +45,15 @@ export const CloseIcon = () => (
     <path d="M4 4l8 8M12 4l-8 8" />
   </svg>
 );
+
+export const RefreshIcon = () => (
+  <svg {...ICON_PROPS}>
+    <path d="M13 3.5v3h-3M13 6.5A5 5 0 1 0 13.3 9" />
+  </svg>
+);
+
+export const ExitIcon = () => (
+  <svg {...ICON_PROPS}>
+    <path d="M6.5 2.5h-3v11h3M6 8h7.5M11 5.5L13.5 8 11 10.5" />
+  </svg>
+);

@@ -6,10 +6,12 @@ type Props = {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  /** Hint inside the empty field; defaults to `label`. */
+  placeholder?: string;
   className?: string;
 };
 
-export function SearchField({ id, label, value, onChange, className }: Props) {
+export function SearchField({ id, label, value, onChange, placeholder, className }: Props) {
   const input = useRef<HTMLInputElement>(null);
   const clear = (): void => {
     onChange("");
@@ -41,7 +43,7 @@ export function SearchField({ id, label, value, onChange, className }: Props) {
         id={id}
         type="search"
         aria-label={label}
-        placeholder={label}
+        placeholder={placeholder ?? label}
         autoComplete="off"
         value={value}
         onChange={(event) => onChange(event.target.value)}

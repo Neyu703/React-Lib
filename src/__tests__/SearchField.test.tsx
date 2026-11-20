@@ -49,3 +49,12 @@ it("passes a class name to the wrapper", () => {
   const { container } = render(<SearchField id="s" label="Suche" value="" onChange={() => undefined} className="wide" />);
   expect(container.querySelector(".search-field")).toHaveClass("wide");
 });
+
+it("uses the label as placeholder unless one is given", () => {
+  const view = render(<SearchField id="s" label="Suche" value="" onChange={() => undefined} />);
+  expect(screen.getByRole("searchbox")).toHaveAttribute("placeholder", "Suche");
+  view.unmount();
+  render(<SearchField id="s" label="Suche" placeholder="Name oder Nummer" value="" onChange={() => undefined} />);
+  expect(screen.getByRole("searchbox")).toHaveAttribute("placeholder", "Name oder Nummer");
+  expect(screen.getByRole("searchbox", { name: "Suche" })).toBeInTheDocument();
+});
