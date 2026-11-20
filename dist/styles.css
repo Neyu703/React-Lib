@@ -812,3 +812,542 @@ label.float.missing input {
     transition: none;
   }
 }
+dialog {
+  border: 1px solid var(--separator);
+  border-radius: 14px;
+  background: var(--bg-card);
+  color: var(--label);
+  padding: 20px 24px;
+  width: min(520px, 92vw);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+html[data-dim=off] dialog::backdrop {
+  background: transparent;
+}
+
+/* Verschiebbare Dialoge sind nicht modal, haben aber eine Ebene unter sich (z-index ab 1000), die Klicks auf den Hintergrund abfängt; sie dunkelt ab, außer bei dialog_dim "off". */
+html:has(dialog.floating[open])::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+html[data-dim=off]:has(dialog.floating[open])::after {
+  background: transparent;
+}
+
+/* Modus "float": nicht modal, frei verschiebbar (Titelzeile) und in der Größe änderbar (Ecke); Breite/Höhe setzt der Browser inline */
+dialog.floating {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  resize: both;
+  overflow: auto;
+  min-width: 260px;
+  min-height: 120px;
+  box-sizing: border-box;
+}
+
+dialog.floating h2:first-child,
+dialog.floating form > h2:first-child {
+  cursor: move;
+  user-select: none;
+}
+
+/* Modus "window": der Dialog füllt das eigene Fenster */
+dialog.in-window {
+  position: static !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100vh;
+  max-height: none !important;
+  margin: 0 !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+/* Größe frei änderbar (float, window): Inhalt füllt den Dialog, Listen wachsen mit, die Knopfzeile sitzt unten */
+dialog.floating[open],
+dialog.in-window[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog.floating[open] > form,
+dialog.in-window[open] > form {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+dialog.floating .dialog-actions,
+dialog.in-window .dialog-actions {
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+dialog.floating #changelog-entries,
+dialog.in-window #changelog-entries,
+dialog.floating #confirm-preview,
+dialog.in-window #confirm-preview,
+dialog.floating .job-log,
+dialog.in-window .job-log {
+  flex: 1 1 auto;
+  min-height: 60px;
+  max-height: none;
+  overflow: auto;
+}
+
+html:has(dialog:modal),
+html:has(dialog.floating[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--label-secondary);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dialog-close:hover {
+  background: var(--separator);
+  color: var(--label);
+}
+
+.job-dialog {
+  width: min(640px, 94vw);
+}
+
+.job-dialog h3 {
+  margin: 14px 0 6px;
+  font-size: 13px;
+  color: var(--label-secondary);
+}
+
+#job-bar {
+  width: 100%;
+  height: 10px;
+  accent-color: var(--tint);
+}
+
+.job-steps,
+.job-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.job-step {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--label-secondary);
+}
+
+.job-step.running,
+.job-step.done,
+.job-step.failed {
+  color: var(--label);
+}
+
+.job-step.running .job-icon {
+  color: var(--tint);
+}
+
+.job-step.done .job-icon {
+  color: var(--green);
+}
+
+.job-step.failed .job-icon {
+  color: var(--red);
+}
+
+.job-detail {
+  display: block;
+  font-size: 12px;
+  color: var(--label-secondary);
+}
+
+.job-duration {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--label-secondary);
+}
+
+.job-log {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--separator);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.job-log li.error {
+  color: var(--red);
+}
+
+.job-time {
+  color: var(--label-secondary);
+  display: inline-block;
+  min-width: 64px;
+}
+
+.job-autoclose {
+  margin: 0 auto 0 0 !important;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* Rahmen aller Formular-Dialoge: Kopf mit Titel, scrollender Inhalt, Fußleiste mit den Aktionen (DialogFrame). */
+dialog:has(> .dialog-frame) {
+  padding: 0;
+  overflow: hidden;
+}
+
+.dialog-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 90vh;
+}
+
+dialog.floating[open] > .dialog-frame,
+dialog.in-window[open] > .dialog-frame {
+  flex: 1 1 auto;
+  max-height: none;
+}
+
+dialog.floating .dialog-head h2 {
+  cursor: move;
+  user-select: none;
+}
+
+dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 16px 56px 16px 28px;
+  border-bottom: 1px solid var(--separator);
+}
+
+.dialog-head h2 {
+  margin: 0;
+  flex: none;
+  font-size: 1.35rem;
+}
+
+.dialog-content {
+  font-size: 15px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 20px 28px;
+}
+
+.dialog-foot {
+  padding: 14px 28px;
+  border-top: 1px solid var(--separator);
+  background: var(--bg-grouped);
+}
+
+.dialog-foot.dialog-actions {
+  margin-top: 0;
+  padding-top: 14px;
+}
+
+#confirm-dialog.with-preview {
+  width: min(760px, 94vw);
+}
+
+#confirm-preview {
+  margin: 8px 0;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+#update-dialog {
+  width: min(480px, 94vw);
+}
+
+#changelog-dialog {
+  width: min(600px, 94vw);
+}
+
+#changelog-entries {
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.changelog-group {
+  margin: 8px 0;
+}
+
+.changelog-group > summary {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.changelog-entry {
+  margin: 6px 0 0 16px;
+}
+
+.changelog-entry > summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.changelog-group summary .muted {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.changelog-group p {
+  margin: 2px 0 0 16px;
+}
+
+.changelog-entry p {
+  margin: 2px 0 0;
+}
+
+.changelog-actions {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tab-link {
+  color: var(--tint);
+  font-weight: 600;
+}
+
+.color-field {
+  position: relative;
+  display: inline-flex;
+}
+
+.color-swatch {
+  width: 44px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--separator);
+  box-shadow: inset 0 0 0 2px var(--bg-card);
+  cursor: pointer;
+}
+.color-swatch:hover {
+  filter: brightness(1.06);
+  background-color: inherit;
+}
+.color-swatch[aria-expanded=true] {
+  border-color: var(--tint);
+}
+
+.color-popover {
+  position: fixed;
+  z-index: 3000;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.color-presets {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  gap: 3px;
+}
+.color-presets > :nth-child(10) {
+  margin-right: 0;
+}
+.color-presets > :nth-child(n+11):nth-child(-n+20) {
+  margin-top: 4px;
+}
+.color-presets > :nth-child(n+61) {
+  margin-top: 4px;
+}
+
+.color-preset {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--label) 25%, transparent);
+}
+.color-preset:hover {
+  transform: scale(1.18);
+  position: relative;
+  z-index: 1;
+}
+.color-preset.on {
+  box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 3px var(--tint);
+}
+
+.color-hex {
+  width: 100%;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 2px 8px;
+  font-family: ui-monospace, Consolas, monospace;
+  text-transform: lowercase;
+}
+
+.color-custom {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  gap: 3px;
+}
+
+.color-custom-item {
+  position: relative;
+  display: inline-flex;
+}
+.color-custom-item:hover .color-custom-remove {
+  display: block;
+}
+
+.color-custom-remove {
+  display: none;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 10px;
+  line-height: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--separator);
+  color: var(--label);
+}
+
+.color-add {
+  background: conic-gradient(#f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 14px;
+  text-shadow: 0 0 2px #000;
+}
+
+.color-mixer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+}
+
+.color-mixer-top {
+  display: flex;
+  gap: 0;
+}
+
+.color-mixer-preview {
+  flex: none;
+  width: 70px;
+  border-radius: 6px 0 0 6px;
+}
+
+.color-area,
+.color-hue {
+  position: relative;
+  touch-action: none;
+  cursor: crosshair;
+  border-radius: 6px;
+}
+.color-area i,
+.color-hue i {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.color-area {
+  flex: 1 1 auto;
+  height: 110px;
+  border-radius: 0 6px 6px 0;
+  background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+}
+
+.color-hue {
+  height: 12px;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+.color-hue i {
+  top: 50%;
+}
+
+.color-hex-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.color-preview {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--separator);
+}
+
+.color-hex-row .color-hex {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.color-save {
+  flex: none;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
