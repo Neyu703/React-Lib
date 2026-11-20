@@ -7,7 +7,7 @@ Gemeinsame React-Komponenten, Design-Tokens und Sass-Mixins für KTE-Programme (
 Im Frontend-Verzeichnis ausführen. Das Repo ist öffentlich.
 
 ```powershell
-pnpm add "github:Neyu703/React-Lib#v0.4.0"
+pnpm add "github:Neyu703/React-Lib#v0.5.0-rc.1"
 ```
 
 ```tsx
